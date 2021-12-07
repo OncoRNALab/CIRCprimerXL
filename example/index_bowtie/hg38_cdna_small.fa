@@ -1,0 +1,11 @@
+>ENST00000456328.2 cdna chromosome:GRCh38:1:11869:14409:1 gene:ENSG00000223972.5 gene_biotype:transcribed_unprocessed_pseudogene transcript_biotype:processed_transcript gene_symbol:DDX11L1 description:DEAD/H-box helicase 11 like 1 (pseudogene) [Source:HGNC Symbol;Acc:HGNC:37102]
+GTTAACTTGCCGTCAGCCTTTTCTTTGACCTCTTCTTTCTGTTCATGTGTATTTGCTGTC
+--
+>ENST00000450305.2 cdna chromosome:GRCh38:1:12010:13670:1 gene:ENSG00000223972.5 gene_biotype:transcribed_unprocessed_pseudogene transcript_biotype:transcribed_unprocessed_pseudogene gene_symbol:DDX11L1 description:DEAD/H-box helicase 11 like 1 (pseudogene) [Source:HGNC Symbol;Acc:HGNC:37102]
+GTGTCTGACTTCCAGCAACTGCTGGCCTGTGCCAGGGTGCAAGCTGAGTTGGAGGAAAGA
+--
+>ENST00000488147.1 cdna chromosome:GRCh38:1:14404:29570:-1 gene:ENSG00000227232.5 gene_biotype:unprocessed_pseudogene transcript_biotype:unprocessed_pseudogene gene_symbol:WASH7P description:WASP family homolog 7, pseudogene [Source:HGNC Symbol;Acc:HGNC:38034]
+ATGGGAGCCGTGTGCACGTCGGGAGCTCGGAGTGAGCGCACCATGACTCCTGTGAGGATG
+--
+>ENST00000619216.1 ncrna chromosome:GRCh38:1:17369:17436:-1 gene:ENSG00000278267.1 gene_biotype:miRNA transcript_biotype:miRNA gene_symbol:MIR6859-1 description:microRNA 6859-1 [Source:HGNC Symbol;Acc:HGNC:50039]
+TGTGGGAGAGGAACATGGGCTCAGGACAGCGGGTGTCAGCTTGCCTGACCCCCATGTCGC
