@@ -1,0 +1,8 @@
+assets/index_*
+docker/assets/*
+**/.DS_Store
+.DS_Store
+.nextflow*
+work*
+nextflow_dev.config
+README.html
