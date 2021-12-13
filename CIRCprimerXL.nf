@@ -163,13 +163,14 @@ process split_circRNAs {
 
 	input:
 	path 'input_bed_handle' from input_bed
+	path 'chrom_file_handle' from params.chrom_file
 
 	output:
 	path 'circ*' into ind_circ_file
 	path 'start_time.txt' into start_time
 
 	"""
-	validate_bed.py -i $input_bed_handle -c $params.chrom_file
+	validate_bed.py -i $input_bed_handle -c $chrom_file_handle
 	split_circRNAs.py -i $input_bed_handle
 	python3 -c 'from datetime import datetime; print(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))' > start_time.txt
 	"""
@@ -251,7 +252,7 @@ process get_primers {
 
 	"""
 	upfront_filter.py -i in_primer3_handle -a out_folding_template_upfront_filter_handle -f $upfront_filter -s out_SNP_upfront_filter_handle -l $temp_l_handle
-	/bin/primer3-2.5.0/src/primer3_core --output=output_primer3_${u_filter_id}.txt --p3_settings_file=primer_settings_handle primer3_file*
+	/bin/primer3-2.5.0/src/primer3_core --output=output_primer3_${u_filter_id}.txt --p3_settings_file=$primer_settings_handle primer3_file*
 	split_primers.py -i output_primer3_${u_filter_id}.txt
 	"""
 }
@@ -326,7 +327,11 @@ process print_output {
 	path 'all_primer_files' from out_dir.collect()
 
 	output:
-	path '*'
+	path all_primers
+	path filtered_primers.txt
+	path log_file.txt
+	path primer3_details
+	path summary_run.txt
 
 	"""
 	mkdir all_primers
