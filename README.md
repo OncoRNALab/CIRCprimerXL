@@ -121,7 +121,7 @@ Nextflow keeps track of all the processes executed in your pipeline. If you want
 
 Note: The pipeline results are cached by default in the directory $PWD/work. This folder can take of lot of disk space. If your are sure you won’t resume your pipeline execution, clean this folder periodically.
 
-Note: If a circRNA is smaller than the requested template size, the template size is reduced to the circRNA size. Of note , if this 300-nucleotide template sequence includes an exon-intron boundary, the intronic region (which might not be transcribed) is included. This was decided as some circRNAs also include intronic sequences, and the BSJ can concatenate an exonic sequence and an intronic sequence.
+Note: If a circRNA is smaller than the requested template size, the template size is reduced to the circRNA size. Of note, if this 300-nucleotide template sequence includes an exon-intron boundary, the intronic region (which may not be part of the circRNA) is included. Some circRNAs effectively also include intronic sequences, and some BSJ concatenate an exonic and an intronic sequence. 
 
 ## Other species
 As default, CIRCprimerXL designs primers voor humans. To design primers for other species, the following files have to be provided and parsed through the corresponding parameters:

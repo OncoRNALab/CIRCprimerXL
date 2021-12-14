@@ -6,3 +6,4 @@ docker/assets/*
 work*
 nextflow_dev.config
 README.html
+.Rhistory
