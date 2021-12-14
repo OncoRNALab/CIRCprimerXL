@@ -4,15 +4,15 @@
 	for 0 circRNAs (0.0 %), none of the primer pairs passed all filters
 
 in total
-	21 primer pairs were designed and tested
-	20 (95.2 %) primer pairs passed all filters
+	23 primer pairs were designed and tested
+	23 (100.0 %) primer pairs passed all filters
 	0 (0.0 %) primer pairs failed the specicifity filter
 	0 (0.0 %) primer pairs failed the SNP filter
 	0 (0.0 %) primer pairs failed the secundary structure of the template filter
-	1 (4.8 %) primer pairs failed the secundary structure of the amplicon filter
+	0 (0.0 %) primer pairs failed the secundary structure of the amplicon filter
 
 see log file for more details per circRNA
 
-run started at 12/11/2021 11:16:42 (UTC)
-run ended at 12/11/2021 11:21:17 (UTC)
-total run time: 275 seconds
+run started at 14/12/2021 10:35:07 (UTC)
+run ended at 14/12/2021 10:35:37 (UTC)
+total run time: 30 seconds
