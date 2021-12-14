@@ -327,11 +327,10 @@ process print_output {
 	path 'all_primer_files' from out_dir.collect()
 
 	output:
-	path all_primers
-	path filtered_primers.txt
-	path log_file.txt
-	path primer3_details
-	path summary_run.txt
+	path 'all_primers'
+	path 'filtered_primers.txt'
+	path 'log_file.txt'
+	path 'summary_run.txt'
 
 	"""
 	mkdir all_primers
