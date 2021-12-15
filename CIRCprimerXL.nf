@@ -31,6 +31,7 @@ params.help = false
 
 // required parameters
 input_bed = file(params.input_bed)
+chrom_file = file(params.chrom_file)
 index_bowtie = file(params.index_bowtie)
 index_fasta = file(params.index_fasta)
 
@@ -163,7 +164,7 @@ process split_circRNAs {
 
 	input:
 	path 'input_bed_handle' from input_bed
-	path 'chrom_file_handle' from params.chrom_file
+	path 'chrom_file_handle' from chrom_file
 
 	output:
 	path 'circ*' into ind_circ_file
