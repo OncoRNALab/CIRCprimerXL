@@ -326,6 +326,8 @@ process print_output {
 	file 'log_file_per_circ*' from log_file_per_circ.collect()
 	file 'start_time_file' from start_time
 	path 'all_primer_files' from out_dir.collect()
+	val 'upfront_filter' from params.upfront_filter
+
 
 	output:
 	path 'all_primers'
@@ -340,6 +342,6 @@ process print_output {
 	cat results_per_circ* >> filtered_primers.txt
 	echo "circ_ID	chr	start	end	design	primer_found	total_primer_pairs	passed	failed_spec	failed_SNP	failed_sec_str_temp	failed_sec_str_amp" > log_file.txt
 	cat log_file_per_circ* >> log_file.txt
-	summary_run.py -l log_file.txt -s start_time_file -o .
+	summary_run.py -l log_file.txt -s start_time_file -o . -u $upfront_filter
 	"""
 }
