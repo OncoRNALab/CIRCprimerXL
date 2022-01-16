@@ -1,4 +1,5 @@
-assets/index_*
+assets/GRCh38/index_bowtie/*
+assets/GRCh38/index_fastahack/*
 docker/assets/*
 **/.DS_Store
 .DS_Store

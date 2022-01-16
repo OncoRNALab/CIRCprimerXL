@@ -2,12 +2,12 @@
 
 // set default parameters
 
-params.index_bowtie = "$baseDir/assets/index_bowtie"
-params.index_bowtie_name = "hg38_cdna"
-params.index_fasta = "$baseDir/assets/index_fastahack"
-params.index_fasta_name = "Homo_sapiens.GRCh38.dna.primary_assembly.fa"
+params.index_bowtie = "$baseDir/assets/GRCh38/index_bowtie"
+params.index_bowtie_name = "GRCh38_dna"
+params.index_fasta = "$baseDir/assets/GRCh38/index_fastahack"
+params.index_fasta_name = "GRCh38.dna.primary_assembly.fa"
 params.primer_settings = "$baseDir/assets/primer3plus_settings.txt"
-params.chrom_file = "$baseDir/assets/chrom_sizes_GRCh38.p13.txt"
+params.chrom_file = "$baseDir/assets/GRCh38/chrom_sizes_GRCh38.txt"
 params.input_bed = "example/path"
 
 params.primer3_diff = 1
