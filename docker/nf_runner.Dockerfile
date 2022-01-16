@@ -25,11 +25,13 @@ RUN apt-get update && \
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/
 RUN export JAVA_HOME
 
-# get pipeline
-ADD assets/CIRCprimerXL /CIRCprimerXL
-
 # get nextflow
+WORKDIR /usr/bin
 RUN wget -qO- https://get.nextflow.io | bash
 RUN chmod +x nextflow
+RUN nextflow run hello -plugins nf-amazon@1.3.4
 
-ENTRYPOINT ["./nextflow", "./CIRCprimerXL/CIRCprimerXL.nf", "-config", "./CIRCprimerXL/nextflow.config", "-profile", "nf_runner"]
+# get pipeline
+ADD . /CIRCprimerXL
+WORKDIR /CIRCprimerXL
+ENTRYPOINT ["nextflow", "/CIRCprimerXL/CIRCprimerXL.nf", "-config", "/CIRCprimerXL/nf-runner.config"]
