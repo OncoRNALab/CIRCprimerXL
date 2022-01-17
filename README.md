@@ -84,6 +84,7 @@ Usage:
 
 
 	Optinal pipeline arguments:
+	--splice			when set to 'yes' the input sequence will be spliced, when set to 'no' the input sequence will be unspliced
 	--primer_settings   path to file with primer3plus settings (see primer3 manual)
 	--chrom_file        file containing all chromosome sizes (to validate bed file)
 	--primer3_diff      the minimum number of base pairs between the 3' ends of any two left primers (see also primer3 PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE)

@@ -10,6 +10,7 @@ params.primer_settings = "$baseDir/assets/primer3plus_settings.txt"
 params.chrom_file = "$baseDir/assets/GRCh38/chrom_sizes_GRCh38.txt"
 params.input_bed = "example/path"
 
+params.splice = 'yes'
 params.primer3_diff = 1
 params.primer3_nr = 20
 params.min_tm = 58
@@ -56,7 +57,8 @@ def helpMessage() {
 	--index_fasta_name	the name of the fastahack genome file
 
 
-	Optinal pipeline arguments:
+	Optional pipeline arguments:
+	--splice			when set to 'yes' the input sequence will be spliced, when set to 'no' the input sequence will be unspliced
 	--primer_settings	path to file with primer3plus settings (see primer3 manual)
 	--chrom_file		file containing all chromosome sizes (to validate bed file)
 	--primer3_diff		the minimum number of base pairs between the 3' ends of any two left primers (see also primer3 PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE)
@@ -125,6 +127,10 @@ if (params.snp_filter != "strict" && params.snp_filter != 'loose'){
 if (params.spec_filter != "strict" && params.spec_filter != 'loose'){
 	exit 1, "Invalid specificity filter: ${params.spec_filter}. Valid options: 'strict','loose'."}
 
+if (params.splice != "yes" && params.splice != 'no'){
+	exit 1, "Invalid splicing option: ${params.splice}. Valid options: 'yes','no'."}
+
+
 if (params.upfront_filter != "yes" && params.upfront_filter != 'str' && params.upfront_filter != 'snp' && params.upfront_filter != 'no'){
 	exit 1, "Invalid SNP filter: ${params.upfront_filter}. Valid options: 'yes','str','snp','no'."}
 
@@ -186,6 +192,7 @@ process get_seq {
 	val 'nr' from params.primer3_nr
 	val 'length' from params.temp_l
 	path 'fasta_index' from index_fasta
+	val 'spliced' from params.splice
 
 	output:
 	tuple val("${ind_circ_file_handle.baseName}"), path('input_primer3*') into in_primer3
@@ -194,7 +201,7 @@ process get_seq {
 	tuple val("${ind_circ_file_handle.baseName}"), path('input_filter*') into in_filter
 
 	"""
-	get_circ_seq_fastahack1.py -n $length -i $ind_circ_file_handle
+	get_circ_seq_fastahack1.py -n $length -i $ind_circ_file_handle -s $spliced
 	cat fasta_in.txt | /bin/fastahack-1.0.0/fastahack -c fasta_index/$params.index_fasta_name > fasta_out.txt
 	get_circ_seq_fastahack2.py -i $ind_circ_file_handle -n $diff -p $nr -a $params.min_tm -b $params.max_tm -c $params.opt_tm -d $params.diff_tm -e $params.min_gc -f $params.max_gc -g $params.opt_gc -j $params.amp_min -k $params.amp_max
 	"""
