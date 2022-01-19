@@ -9,6 +9,7 @@ params.index_fasta_name = "GRCh38.dna.primary_assembly.fa"
 params.primer_settings = "$baseDir/assets/primer3plus_settings.txt"
 params.chrom_file = "$baseDir/assets/GRCh38/chrom_sizes_GRCh38.txt"
 params.input_bed = "example/path"
+params.known_exons = "$baseDir/assets/GRCh38/known_exons_GRCh38.bed"
 
 params.splice = 'yes'
 params.primer3_diff = 1
@@ -35,6 +36,7 @@ input_bed = file(params.input_bed)
 chrom_file = file(params.chrom_file)
 index_bowtie = file(params.index_bowtie)
 index_fasta = file(params.index_fasta)
+known_exons = file(params.known_exons)
 
 // help message
 
@@ -193,6 +195,7 @@ process get_seq {
 	val 'length' from params.temp_l
 	path 'fasta_index' from index_fasta
 	val 'spliced' from params.splice
+	path 'exons' from params.known_exons
 
 	output:
 	tuple val("${ind_circ_file_handle.baseName}"), path('input_primer3*') into in_primer3
@@ -201,7 +204,7 @@ process get_seq {
 	tuple val("${ind_circ_file_handle.baseName}"), path('input_filter*') into in_filter
 
 	"""
-	get_circ_seq_fastahack1.py -n $length -i $ind_circ_file_handle -s $spliced
+	get_circ_seq_fastahack1.py -n $length -i $ind_circ_file_handle -s $spliced -e $exons
 	cat fasta_in.txt | /bin/fastahack-1.0.0/fastahack -c fasta_index/$params.index_fasta_name > fasta_out.txt
 	get_circ_seq_fastahack2.py -i $ind_circ_file_handle -n $diff -p $nr -a $params.min_tm -b $params.max_tm -c $params.opt_tm -d $params.diff_tm -e $params.min_gc -f $params.max_gc -g $params.opt_gc -j $params.amp_min -k $params.amp_max
 	"""
