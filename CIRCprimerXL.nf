@@ -10,6 +10,7 @@ params.primer_settings = "$baseDir/assets/primer3plus_settings.txt"
 params.chrom_file = "$baseDir/assets/GRCh38/chrom_sizes_GRCh38.txt"
 params.input_bed = "example/path"
 params.known_exons = "$baseDir/assets/GRCh38/known_exons_GRCh38.bed"
+params.list_ENST = "$baseDir/assets/GRCh38/ENST_list_GRCh38.txt"
 
 params.splice = 'yes'
 params.primer3_diff = 1
@@ -37,6 +38,7 @@ chrom_file = file(params.chrom_file)
 index_bowtie = file(params.index_bowtie)
 index_fasta = file(params.index_fasta)
 known_exons = file(params.known_exons)
+list_ENST = file(params.list_ENST)
 
 // help message
 
@@ -63,6 +65,8 @@ def helpMessage() {
 	--splice			when set to 'yes' the input sequence will be spliced, when set to 'no' the input sequence will be unspliced
 	--primer_settings	path to file with primer3plus settings (see primer3 manual)
 	--chrom_file		file containing all chromosome sizes (to validate bed file)
+	--known_exons		bed file containing exon annotation
+	--list_ENST			file containing ENST numbers of canonical transcripts or transcripts of interest (this file can also be left empty)
 	--primer3_diff		the minimum number of base pairs between the 3' ends of any two left primers (see also primer3 PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE)
 	--primer3_nr		the number of primers designed by primer3; caution: setting this parameter to a large value will increase running time
 	--min_tm		minimum melt temperature of the primers (default: 58)
@@ -107,9 +111,17 @@ if (!file(params.primer_settings).exists()) {
 if (!file(params.chrom_file).exists()) {
 	exit 1, "Chromosome size file not found: ${params.chrom_file}"}
 
+if (params.splice == "yes"){
+	if (!file(params.known_exons).exists()) {
+		exit 1, "Known exons file not found: ${params.known_exons}"}}
+
+if (params.splice == "yes" && !(params.list_ENST == "none")) {
+	if (!file(params.list_ENST).exists()) {
+		exit 1, "ENST list file not found: ${params.list_ENST}"}}
+
 if (!params.primer3_diff.toString().isNumber()){
-	exit 1, "Invalid primer3_diff PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE: ${params.primer3_diff}. Valid options: any integer > 0."
-}
+	exit 1, "Invalid primer3_diff PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE: ${params.primer3_diff}. Valid options: any integer > 0."}
+
 if (params.primer3_diff.toInteger() < 0){
 	exit 1, "Invalid primer3_diff PRIMER_MIN_LEFT_THREE_PRIME_DISTANCE: ${params.primer3_diff}. Valid options: any integer > 0."}
 
@@ -196,15 +208,19 @@ process get_seq {
 	path 'fasta_index' from index_fasta
 	val 'spliced' from params.splice
 	path 'exons' from params.known_exons
+	path 'enst' from params.list_ENST
 
 	output:
 	tuple val("${ind_circ_file_handle.baseName}"), path('input_primer3*') into in_primer3
 	tuple val("${ind_circ_file_handle.baseName}"), path('input_NUPACK*') into in_folding
 	tuple val("${ind_circ_file_handle.baseName}"), path('input_SNP*') into in_SNP
 	tuple val("${ind_circ_file_handle.baseName}"), path('input_filter*') into in_filter
+	tuple val("${ind_circ_file_handle.baseName}"), path('fasta_in.txt') into fasta_SNP
+	tuple val("${ind_circ_file_handle.baseName}"), path('fasta_track.txt') into fasta_track
+	path 'annotation*.txt' into annotation_splice
 
 	"""
-	get_circ_seq_fastahack1.py -n $length -i $ind_circ_file_handle -s $spliced -e $exons
+	get_circ_seq_fastahack1.py -n $length -i $ind_circ_file_handle -s $spliced -e $exons -t $enst
 	cat fasta_in.txt | /bin/fastahack-1.0.0/fastahack -c fasta_index/$params.index_fasta_name > fasta_out.txt
 	get_circ_seq_fastahack2.py -i $ind_circ_file_handle -n $diff -p $nr -a $params.min_tm -b $params.max_tm -c $params.opt_tm -d $params.diff_tm -e $params.min_gc -f $params.max_gc -g $params.opt_gc -j $params.amp_min -k $params.amp_max
 	"""
@@ -215,6 +231,9 @@ process get_SNPs {
 
 	input:
 	tuple val(snp_id), path('in_SNP_handle') from in_SNP
+	tuple val(snp_id), path('fasta_SNP_handle') from fasta_SNP
+	tuple val(snp_id), path('fasta_track_handle') from fasta_track
+
 
 	output:
 	tuple val(snp_id), path('output_SNP*') into out_SNP_upfront_filter
@@ -222,7 +241,7 @@ process get_SNPs {
 
 
 	"""
-	get_SNPs.py -i in_SNP_handle -u $params.snp_url
+	get_SNPs.py -i in_SNP_handle -u $params.snp_url -f fasta_SNP_handle -t fasta_track_handle
 	"""
 	
 }
@@ -312,6 +331,7 @@ process filter_primers {
 	file 'out_spec_primer_handle' from out_spec_primer
 	val 'snp_filter_handle' from params.snp_filter
 	val 'temp_l_handle' from params.temp_l
+	path 'splice_annotation*' from annotation_splice.collect()
 	
 	output:
 	path('selected_primers_*') into results_per_circ
@@ -321,6 +341,7 @@ process filter_primers {
 	"""
 	mkdir all_primers
 	filter.py -A circ_file_handle -P all_primers_per_circ_handle -b out_spec_primer_handle -l $temp_l_handle -s out_SNP_handle -t out_folding_template_handle -a out_folding_amplicon_handle -f snp_filter_handle -p $params.spec_filter
+	cat splice_annotation* >> all_splice_annotation.txt
 	gather_output.py -i all_primers/filtered_primers_*
 	"""
 }
@@ -348,7 +369,7 @@ process print_output {
 	"""
 	mkdir all_primers
 	cp all_primer_files*/* all_primers/
-	echo "circ_ID	chr	start	end	primer_ID	FWD_primer	REV_primer	FWD_pos	FWD_length	REV_pos	REV_length	FWD_TM	REV_TM	FWD_GC	REV_GC	amplicon	PASS" > filtered_primers.txt
+	echo "circ_ID	chr	start	end	primer_ID	FWD_primer	REV_primer	FWD_pos	FWD_length	REV_pos	REV_length	FWD_TM	REV_TM	FWD_GC	REV_GC	amplicon	PASS	start_type	end_type	spliced" > filtered_primers.txt
 	cat results_per_circ* >> filtered_primers.txt
 	echo "circ_ID	chr	start	end	design	primer_found	total_primer_pairs	passed	failed_spec	failed_SNP	failed_sec_str_temp	failed_sec_str_amp" > log_file.txt
 	cat log_file_per_circ* >> log_file.txt

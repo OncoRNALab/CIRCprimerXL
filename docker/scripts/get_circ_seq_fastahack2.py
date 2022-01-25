@@ -41,10 +41,16 @@ circ_ID = circRNA.split()[3]
 
 # retrieve sequence
 fasta = open("fasta_out.txt")
+fasta_track = open("fasta_track.txt")
 
-left = fasta.readline().rstrip()
-right = fasta.readline().rstrip()
+right = ""
+left = ""
 
+for seq, seq_type in zip(fasta, fasta_track):
+	if seq_type[0:4] == '>end':
+		left = seq.rstrip() + left
+	elif seq_type[0:6] == '>start':
+		right = right + seq.rstrip()
 
 # ## paste both sides of BSJ together
 sequence = left + right
@@ -85,13 +91,13 @@ output.close()
 # ## make a bed file for SNPs (0-based => use original bed file annotation)
 
 output = open("input_SNP_" + circ_ID + ".bed", 'w')
-output.write(circRNA + '\t' + str(int(length)))
+output.write(circRNA + '\t' + str(int(length)) + '\n')
 output.close()
 
 # ## make file for filtering
 
 output = open("input_filter_" + circ_ID + ".bed", 'w')
-output.write(circRNA)
+output.write(circRNA + '\n')
 output.close()
 
 

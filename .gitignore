@@ -8,3 +8,4 @@ work*
 nextflow_dev.config
 README.html
 .Rhistory
+assets/GRCh38/known_exons_GRCh38.bed

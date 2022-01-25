@@ -11,12 +11,14 @@ RUN apt-get install -y wget
 RUN apt-get install -y unzip
 RUN apt-get install -y python3
 RUN apt-get install -y python3-pip
+RUN apt-get install -y bedtools
 
 # install python packages
 RUN python3 -m pip install -U pip Bio
 RUN python3 -m pip install -U matplotlib jupyterlab
 RUN python3 -m pip install -U pandas
 RUN python3 -m pip install -U datetime
+RUN python3 -m pip install -U pybedtools
 
 
 # install NUPACK
@@ -64,4 +66,4 @@ WORKDIR /
 
 # install python scripts
 ADD scripts /usr/bin
-RUN chmod +x /usr/bin/get_sec_str_temp.py /usr/bin/get_sec_str_amp.py /usr/bin/filter.py /usr/bin/split_primers.py /usr/bin/split_circRNAs.py /usr/bin/gather_output.py /usr/bin/get_SNPs.py /usr/bin/upfront_filter.py /usr/bin/validate_bed.py /usr/bin/summary_run.py /usr/bin/get_circ_seq_fastahack2.py usr/bin/get_circ_seq_fastahack1.py
+RUN chmod +x /usr/bin/get_sec_str_temp.py /usr/bin/get_sec_str_amp.py /usr/bin/filter.py /usr/bin/split_primers.py /usr/bin/split_circRNAs.py /usr/bin/gather_output.py /usr/bin/get_SNPs.py /usr/bin/upfront_filter.py /usr/bin/validate_bed.py /usr/bin/summary_run.py /usr/bin/get_circ_seq_fastahack2.py usr/bin/get_circ_seq_fastahack1.py /usr/bin/gtf_to_bed.py /usr/bin/generate_ENST_list.py

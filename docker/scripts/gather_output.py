@@ -9,10 +9,17 @@ args = parser.parse_args()
 input_file = args.i[0]
 
 all_primers = open(input_file)
-circ_ID = str(input_file).split('_')[2]
+circ_ID = str(input_file).split('_')[3]
 output = open('selected_primers_' + circ_ID + '.txt', "w")
 
-# output.write("circ_ID\tchr\tstart\tend\tprimer_ID\tFWD_primer\tREV_primer\tFWD_pos\tFWD_length\tREV_pos\tREV_length\tFWD_TM\tREV_TM\tFWD_GC\tREV_GC\tamplicon\n")
+# get splice info
+splice_info = open('all_splice_annotation.txt')
+splice_info_dict = {}
+
+for line in splice_info:
+	circ_id, info = line.rstrip().split('**')
+	splice_info_dict[circ_id] = info
+
 
 if os.path.getsize(input_file) == 0:
 	circ_ID = str(input_file).split('_')[3]
@@ -24,10 +31,11 @@ if os.path.getsize(input_file) == 0:
 
 else: 
 	primer_found = "no"
+	# filter primers according to the filter string
 	for primer in all_primers:
 		filter_str = primer.split()[-1]
 		if (primer_found == "no") and (filter_str == "PASS"):
-			output.write(primer)
+			output.write(primer.rstrip() + "\t" + splice_info_dict[circ_ID].lstrip('/') + "\n")
 			primer_found = 'yes'
 	if primer_found == "no":
 		output.write(('\t'.join(primer.split()[0:4])) + "\tno primer pair passed all filters for this circRNA\n")
