@@ -41,6 +41,7 @@ primer_file = open("primer_spec_input_" + circ_ID + ".txt", "a")
 # make general file with list primers
 all_primers = open("all_primers_" + circ_ID + ".txt", 'w')
 all_amplicon = open("amplicon_folding_input_" + circ_ID + ".txt", 'w')
+all_primers_dict = {}
 
 for primer_index in range(int(nr_p_out)):
 
@@ -82,10 +83,17 @@ for primer_index in range(int(nr_p_out)):
 	all_amplicon.write("> amplicon_" + circ_ID + "_primer" + str(primer_index) + "_" + amplicon + "\n")
 
 
-	# general primer file (for filtering)
-	all_primers.write(circ_ID + "\t" + chrom + "\t" + start + "\t" + end + '\t' + str(primer_index) + '\t' + FWD + '\t' + REV + '\t' + 
+	# general primer file (for filtering), first put in dict, will be sorted (see below)
+	all_primers_dict[circ_ID + "\t" + chrom + "\t" + start + "\t" + end + '\t' + str(primer_index) + '\t' + FWD + '\t' + REV + '\t' + 
 	FWD_pos + '\t' + FWD_len + '\t' + REV_pos +'\t' + REV_len + '\t' + PRIMER_LEFT_TM + '\t' + PRIMER_RIGHT_TM + '\t' + 
-	PRIMER_LEFT_GC_PERCENT + '\t' + PRIMER_RIGHT_GC_PERCENT + '\t' + amplicon + '\n')
+	PRIMER_LEFT_GC_PERCENT + '\t' + PRIMER_RIGHT_GC_PERCENT + '\t' + amplicon + '\n'] = len(amplicon)
+
+
+# sort primers according to amp size (smallest is best) and then print to all_amplicon
+all_primers_sorted = {k: v for k, v in sorted(all_primers_dict.items(), key=lambda item: item[1])}
+
+for primer in all_primers_sorted:
+	all_primers.write(primer)
 
 
 primer_file.close()
