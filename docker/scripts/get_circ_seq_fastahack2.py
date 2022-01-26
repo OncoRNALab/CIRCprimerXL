@@ -57,7 +57,7 @@ sequence = left + right
 
 length = len(sequence) / 2
 
-# ## get max amp lengt => by user or depending on temp_l
+# ## get max amp length => by user or depending on temp_l
 amp_max = args.k[0]
 if int(amp_max) == 0:
 	amp_max = str(int(length + 30))
