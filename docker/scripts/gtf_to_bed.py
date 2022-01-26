@@ -17,8 +17,8 @@ for line in gtf:
 	if annotation == "exon":
 		gene_id, gene_version, transcript_id, transcript_version, exon_number, skip = info.split(';', 5)
 		
-		transcript_id = transcript_id.lstrip().rstrip().replace('transcript_id', '').replace('"', '')
-		transcript_version = transcript_version.lstrip().rstrip().replace('transcript_version', '').replace('"', '')
-		exon_number = exon_number.lstrip().rstrip().replace('exon_number', '').replace('"', '')
+		transcript_id = transcript_id.lstrip().rstrip().replace('transcript_id ', '').replace('"', '')
+		transcript_version = transcript_version.lstrip().rstrip().replace('transcript_version ', '').replace('"', '')
+		exon_number = exon_number.lstrip().rstrip().replace('exon_number ', '').replace('"', '')
 
 		bed.write("chr" + chrom + '\t' + str(int(start) - 1 ) + '\t' + end + '\t' + transcript_id + '_' + transcript_version + '_exon_' + exon_number + '\n')
