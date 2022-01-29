@@ -217,7 +217,7 @@ process get_seq {
 	tuple val("${ind_circ_file_handle.baseName}"), path('input_filter*') into in_filter
 	tuple val("${ind_circ_file_handle.baseName}"), path('fasta_in.txt') into fasta_SNP
 	tuple val("${ind_circ_file_handle.baseName}"), path('fasta_track.txt') into fasta_track
-	path 'annotation*.txt' into annotation_splice
+	tuple val("${ind_circ_file_handle.baseName}"), path('annotation*.txt') into annotation_splice
 
 	"""
 	get_circ_seq_fastahack1.py -n $length -i $ind_circ_file_handle -s $spliced -e $exons -t $enst
@@ -324,14 +324,13 @@ process specificity_primers {
 
 process filter_primers {
 
-	gather_filter = in_filter.join(out_SNP).join(out_folding_template).join(out_folding_amplicon).join(all_primers_per_circ).groupTuple()
+	gather_filter = in_filter.join(out_SNP).join(out_folding_template).join(out_folding_amplicon).join(all_primers_per_circ).join(annotation_splice).groupTuple()
 
 	input:
-	tuple val(filter_id), path('circ_file_handle'), path('out_SNP_handle'), path('out_folding_template_handle'), path('out_folding_amplicon_handle'), path('all_primers_per_circ_handle') from gather_filter
+	tuple val(filter_id), path('circ_file_handle'), path('out_SNP_handle'), path('out_folding_template_handle'), path('out_folding_amplicon_handle'), path('all_primers_per_circ_handle'), path('annotation_splice_handle') from gather_filter
 	file 'out_spec_primer_handle' from out_spec_primer
 	val 'snp_filter_handle' from params.snp_filter
 	val 'temp_l_handle' from params.temp_l
-	path 'splice_annotation*' from annotation_splice.collect()
 	
 	output:
 	path('selected_primers_*') into results_per_circ
@@ -341,8 +340,7 @@ process filter_primers {
 	"""
 	mkdir all_primers
 	filter.py -A circ_file_handle -P all_primers_per_circ_handle -b out_spec_primer_handle -l $temp_l_handle -s out_SNP_handle -t out_folding_template_handle -a out_folding_amplicon_handle -f snp_filter_handle -p $params.spec_filter
-	cat splice_annotation* >> all_splice_annotation.txt
-	gather_output.py -i all_primers/filtered_primers_*
+	gather_output.py -i all_primers/filtered_primers_* -a annotation_splice_handle
 	"""
 }
 
