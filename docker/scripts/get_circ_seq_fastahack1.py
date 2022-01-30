@@ -105,7 +105,7 @@ else:
     match_ex_tr_end = {}
     
     for line in match_file_end:
-        match_c, match_s, match_e, trans, skip, match_sd = line.split('\t')
+        match_c, match_s, match_e, trans = line.split('\t')
         match_dict_end_size[trans] = int(match_e) - int(match_s) + 1
         match_dict_end_pos[trans] = match_c + ':' + match_s + '-' + match_e
         match_ex_tr_end[trans.split("_")[0]] = trans
