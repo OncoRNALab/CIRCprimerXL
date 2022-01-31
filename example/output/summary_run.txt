@@ -1,0 +1,17 @@
+3 circRNA(s) were given as input
+	for 3 circRNA(s) (100.0 %), primer pair(s) were designed and filtered succesfully 
+	for 0 circRNA(s) (0.0 %), the (spliced) template sequence was to short and no primer pair(s) could be designed by primer3
+	for 0 circRNA(s) (0.0 %), no primer pair(s) could be designed by primer3
+	for 0 circRNA(s) (0.0 %), none of the primer pair(s) passed all filters
+
+in total
+	20 primer pair(s) were designed and tested
+	20 (100.0 %) primer pairs passed all filters
+	0 (0.0 %) primer pair(s) failed the specificity filter
+	0 (0.0 %) primer pair(s) failed the secondary structure of the amplicon filter
+
+see log file for more details per circRNA
+
+run started at 31/01/2022 05:59:25 (UTC)
+run ended at 31/01/2022 06:00:35 (UTC)
+total run time: 70 seconds

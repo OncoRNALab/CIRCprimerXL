@@ -17,6 +17,9 @@ input_file.close()
 circ_nr = len(str(count_lines))
 circ_nr = "circ{:0" + str(circ_nr) +"d}"
 
+# also make a file containing all circs for the end
+all_circ_file = open('all_circ.txt', 'w')
+
 
 input_file = open(input_bed)
 
@@ -38,8 +41,12 @@ for circRNA in input_file:
 	ind_circ_file.write(circ_str + '\t' + ID_str + '\n')
 	ind_circ_file.close()
 
+	all_circ_file.write(ID_str + '\t' + circ_str + '\n')
+
 	
 	ID += 1
+
+all_circ_file.close()
 
 def checkIfDuplicates(listOfElems):
     ''' Check if given list contains any duplicates '''

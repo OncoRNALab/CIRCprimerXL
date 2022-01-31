@@ -1,0 +1,4 @@
+circ_ID	chr	start	end	design	primer_found	total_primer_pairs	passed	failed_spec	failed_SNP	failed_sec_str_temp	failed_sec_str_amp
+circ2	chr1	17525	18061	1	1	5	5	0	0	0	0
+circ1	chr1	17232	17742	1	1	8	8	0	0	0	0
+circ0	chr1	16606	17055	1	1	7	7	0	0	0	0

@@ -189,6 +189,7 @@ process split_circRNAs {
 	output:
 	path 'circ*' into ind_circ_file
 	path 'start_time.txt' into start_time
+	path 'all_circ.txt' into all_cic
 
 	"""
 	validate_bed.py -i $input_bed_handle -c $chrom_file_handle
@@ -265,6 +266,7 @@ process folding_template {
 process get_primers {
 
 	publishDir "$params.output_dir/primer3_details", mode: 'copy', pattern: 'output_primer3_*'
+	errorStrategy "ignore"
 
 	all_info = out_folding_template_upfront_filter.join(in_primer3).join(out_SNP_upfront_filter).groupTuple()
 	
@@ -356,6 +358,7 @@ process print_output {
 	file 'start_time_file' from start_time
 	path 'all_primer_files' from out_dir.collect()
 	val 'upfront_filter' from params.upfront_filter
+	path 'all_circ_file' from all_cic
 
 
 	output:
@@ -371,6 +374,6 @@ process print_output {
 	cat results_per_circ* >> filtered_primers.txt
 	echo "circ_ID	chr	start	end	design	primer_found	total_primer_pairs	passed	failed_spec	failed_SNP	failed_sec_str_temp	failed_sec_str_amp" > log_file.txt
 	cat log_file_per_circ* >> log_file.txt
-	summary_run.py -l log_file.txt -s start_time_file -o . -u $upfront_filter
+	summary_run.py -l log_file.txt -s start_time_file -o . -u $upfront_filter -a all_circ_file
 	"""
 }
