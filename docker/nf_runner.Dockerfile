@@ -1,5 +1,5 @@
 # based on existing java image
-FROM oncornalab/primerxl_circ:v0.26
+FROM oncornalab/primerxl_circ:v0.27
 
 
 # copied from https://hub.docker.com/r/picoded/ubuntu-openjdk-8-jdk/dockerfile/
