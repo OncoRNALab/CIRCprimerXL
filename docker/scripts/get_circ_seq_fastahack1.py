@@ -134,7 +134,7 @@ else:
     match_ex_tr_start = {}
     
     for line in match_file_start:
-        match_c, match_s, match_e, trans, skip, match_sd = line.split('\t')
+        match_c, match_s, match_e, trans = line.split('\t')
         match_dict_start_size[trans] = int(match_e) - int(match_s) + 1
         match_dict_start_pos[trans] = match_c + ':' + match_s + '-' + match_e
         match_ex_tr_start[trans.split("_")[0]] = trans
@@ -285,8 +285,13 @@ else:
                 while temp_length_end < temp_length:
 
                     # look for previous exon and save their end pos in separate dict
+                    # split depending on organism (c elengans has differen annotation
+                    if new_exon_end.count('_') == 2:
+                        trans_nr, skip, exon_nr = new_exon_end.split("_", 2)
 
-                    trans_nr, skip, exon_nr, skip2 = new_exon_end.split("_", 3)
+                    else:
+                        trans_nr, trans_v, skip, exon_nr = new_exon_end.split("_", 3)
+
                     exon_nr = int(exon_nr)
                     previous_exon = trans_nr + '_exon_' + str(exon_nr - 1 - extra_exon_end)
 
@@ -298,7 +303,7 @@ else:
 
                     for line in exons_file:
                         if re.search(previous_exon, line):
-                            new_c, new_s, new_e, new_trans, new_0, new_str = line.split("\t")
+                            new_c, new_s, new_e, new_trans = line.split("\t")
                             # add new exons to the dict with most right pos
                             new_exons_end_pos[new_c.replace("chr", "") + ":" + new_s + "-" + new_e] = int(new_e)
 
@@ -379,8 +384,12 @@ else:
                 while temp_length_start < temp_length:
 
                     # look for next exon and save their start pos in separate dict
+                    # split depending on organism (c elengans has differen annotation
+                    if new_exon_end.count('_') == 2:
+                        trans_nr, skip, exon_nr = new_exon_start.split("_", 2)
 
-                    trans_nr, skip, exon_nr, skip2 = new_exon_start.split("_", 3)
+                    else:
+                        trans_nr, trans_v, skip, exon_nr = new_exon_start.split("_", 3)
                     exon_nr = int(exon_nr)
                     next_exon = trans_nr + '_exon_' + str(exon_nr + 1 + extra_exon_start)
 
@@ -392,7 +401,7 @@ else:
 
                     for line in exons_file:
                         if re.search(next_exon, line):
-                            new_c, new_s, new_e, new_trans, new_0, new_str = line.split("\t")
+                            new_c, new_s, new_e, new_trans = line.split("\t")
                             # add new exons to the dict with most left pos
                             new_exons_start_pos[new_c.replace("chr", "") + ":" + new_s + "-" + new_e] = int(new_s)
 
