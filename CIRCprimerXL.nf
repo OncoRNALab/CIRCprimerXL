@@ -370,7 +370,7 @@ process print_output {
 	"""
 	mkdir all_primers
 	cp all_primer_files*/* all_primers/
-	echo "circ_ID	chr	start	end	primer_ID	FWD_primer	REV_primer	FWD_pos	FWD_length	REV_pos	REV_length	FWD_TM	REV_TM	FWD_GC	REV_GC	amplicon	PASS	start_type	end_type	spliced" > filtered_primers.txt
+	echo "circ_ID	chr	start	end	primer_ID	FWD_primer	REV_primer	FWD_pos	FWD_length	REV_pos	REV_length	FWD_Tm	REV_Tm	FWD_GC	REV_GC	amplicon	PASS	start_annotation	end_annotation	splicing" > filtered_primers.txt
 	cat results_per_circ* >> filtered_primers.txt
 	echo "circ_ID	chr	start	end	design	primer_found	total_primer_pairs	passed	failed_spec	failed_SNP	failed_sec_str_temp	failed_sec_str_amp" > log_file.txt
 	cat log_file_per_circ* >> log_file.txt
