@@ -113,11 +113,11 @@ Usage:
 
 This repository contains an example run with 3 circRNAs. For this, a small subset of the indexes are also present in the example folder. The example can be run by
 ```
-nextflow CIRCprimerXL.nf -profile example
+nextflow run CIRCprimerXL.nf -profile example
 ```
 This is equivalent to
 ```
-nextflow CIRCprimerXL.nf -profile local --output_dir example/output --input_bed example/input_circRNAs.bed --index_fasta example/index_fastahack --index_bowtie example/index_bowtie --index_bowtie_name = hg38_cdna_small
+nextflow run CIRCprimerXL.nf -profile local --output_dir example/output --input_bed example/input_circRNAs.bed --index_fasta example/index_fastahack --index_bowtie example/index_bowtie --index_bowtie_name = hg38_cdna_small
 ```
 
 You can easily create your own profiles by modifying the nextflow.config file.
