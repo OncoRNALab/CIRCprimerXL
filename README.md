@@ -188,3 +188,5 @@ export NXF_VER="20.10.0"
 export TOWER_ACCESS_TOKEN=your_token_here
 ```
 
+## Cite
+M.Vromman, J. Anckaert, J. Vandesompele, P.J. Volders, CIRCprimerXL: convenient and high- throughput PCR primer design for circular RNA quantification. Frontiers in Bioinformatics (2022), DOI:[10.3389/fbinf.2022.834655](https://www.frontiersin.org/articles/10.3389/fbinf.2022.834655/full).
