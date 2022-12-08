@@ -22,13 +22,11 @@ RUN python3 -m pip install -U pybedtools
 
 
 # install NUPACK
-ADD assets/nupack-4.0.0.23 /bin/nupack-4.0.0.23
+ADD assets/nupack-4.0.1.7 /bin/nupack-4.0.1.7
 
 WORKDIR /bin
 
-RUN python3 -m pip install -U nupack -f ./nupack-4.0.0.23/package
-RUN python3 -m pip install -U pytest
-RUN python3 -m pytest -v
+RUN python3 -m pip install -U nupack -f ./nupack-4.0.1.7/package
 
 
 # install primer3 version 2.5.0
