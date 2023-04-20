@@ -1,11 +1,12 @@
 # CIRCprimerXL
-Collaborators: Marieke Vromman, Pieter-Jan Volders
 
-Questions concerning the GitHub structure/scripts can be addressed to any of the collaborators.
-
-Primer design pipeline for circRNAs based on primerXL (Lefever, S., Pattyn, F., De Wilde, B. et al. High-throughput PCR assay design for targeted resequencing using primerXL. BMC Bioinformatics 18, 400 (2017). https://doi.org/10.1186/s12859-017-1809-3).
-
-This pipeline runs entirly in the [oncornalab/primerxl_circ](https://hub.docker.com/repository/docker/oncornalab/primerxl_circ) docker image, which is available on DockerHub. It is not necessary to download this image locally, as Nextflow pulls the latest version automatically from DockerHub.
+<ul> 
+  <li>Collaborators: Marieke Vromman, Pieter-Jan Volders. Questions concerning the GitHub structure/scripts can be addressed to any of the collaborators.</li>
+  <li>Primer design pipeline for circRNAs based on primerXL (Lefever, S., Pattyn, F., De Wilde, B. et al. High-throughput PCR assay design for targeted resequencing using primerXL. BMC Bioinformatics 18, 400 (2017). https://doi.org/10.1186/s12859-017-1809-3).</li>
+  <li>This pipeline runs entirly in the [oncornalab/primerxl_circ](https://hub.docker.com/repository/docker/oncornalab/primerxl_circ) docker image, which is available on DockerHub. It is not necessary to download this image locally, as Nextflow pulls the latest version automatically from DockerHub.</li>
+  <li>If you're a member of the OncoRNALab looking to edit the webtool version of this pipeline, please see the internal GitHub repo: https://github.ugent.be/vandesompelelab/primerXL_circ_web.
+ 
+ </ul>
 
 ## Installation
 ### Required files and reference genomes
