@@ -79,9 +79,11 @@ if fold_temp_avoid != '[]':
 # snps
 SNPs = open(args.s[0]).readline()
 
+SNP_avoid = 'none'
+
 if SNPs != '[]':
 	SNPs = SNPs.replace('[', "").replace(']', '').split(', ')
-	SNPs = [ int(x) for x in SNPs ]
+	SNP_avoid = [ int(x) for x in SNPs ]
 
 # get amplicon folding info into dict
 amp_fold = open(args.a[0])
@@ -138,23 +140,24 @@ for primer in all_primers:
 
 	# check snps
 	
-	if SNP_filter == 'strict':
-		if any(x in FWD_poss for x in SNP_avoid):
-			filter_str = filter_str + "FAIL_snp_F_"
-		if any(x in REV_poss for x in SNP_avoid):
-			filter_str = filter_str + 'FAIL_snp_R_'
-		
+	if (SNP_filter != 'off') & (SNP_avoid != 'none'):
+		if SNP_filter == 'strict':
+			if any(x in FWD_poss for x in SNP_avoid):
+				filter_str = filter_str + "FAIL_snp_F_"
+			if any(x in REV_poss for x in SNP_avoid):
+				filter_str = filter_str + 'FAIL_snp_R_'
+			
 
-	if SNP_filter == 'loose':
-		
-		FWD_poss_5end = FWD_poss[0:int(len(FWD_poss)/2)]
-		REV_poss_5end = REV_poss[int(len(REV_poss)/2):]
+		if SNP_filter == 'loose':
+			
+			FWD_poss_5end = FWD_poss[0:int(len(FWD_poss)/2)]
+			REV_poss_5end = REV_poss[int(len(REV_poss)/2):]
 
-		if any(x in FWD_poss_5end for x in SNP_avoid):
-			filter_str = filter_str + "FAIL_snp_F_"
+			if any(x in FWD_poss_5end for x in SNP_avoid):
+				filter_str = filter_str + "FAIL_snp_F_"
 
-		if any(x in REV_poss_5end for x in SNP_avoid):
-			filter_str = filter_str + 'FAIL_snp_R_'
+			if any(x in REV_poss_5end for x in SNP_avoid):
+				filter_str = filter_str + 'FAIL_snp_R_'
 
 	# check folding template
 	if any(x in FWD_poss for x in fold_temp_avoid):
@@ -169,8 +172,6 @@ for primer in all_primers:
 	if fold_amp_avoid != '[]':
 		fold_amp_avoid = fold_amp_avoid.replace('[', "").replace(']', '').split(', ')
 		fold_amp_avoid = [ int(x) for x in fold_amp_avoid ]
-
-	print(fold_amp_avoid)
 
 	if amp_fold_avoid["primer" + str(primer_ID)] < -15:
 		filter_str = filter_str + 'FAIL_fold_amplicon_'
