@@ -89,6 +89,7 @@ output.close()
 
 
 # ## make a bed file for SNPs (0-based => use original bed file annotation)
+circRNA = circRNA.rstrip('\n')
 
 output = open("input_SNP_" + circ_ID + ".bed", 'w')
 output.write(circRNA + '\t' + str(int(length)) + '\n')

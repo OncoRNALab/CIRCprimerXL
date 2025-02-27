@@ -227,7 +227,7 @@ process get_seq {
 
 process get_SNPs {
 
-	container 'oncornalab/primerxl_circ:v0.11'
+	container 'oncornalab/primerxl_circ:v0.30'
 
 	input:
 	tuple val(snp_id), path(in_SNP_handle)
@@ -270,7 +270,7 @@ process get_primers {
 	input:
 	tuple val(u_filter_id), path('out_folding_template_upfront_filter_handle'), path('in_primer3_handle'), path('out_SNP_upfront_filter_handle')
 	path(primer_settings_handle)
- 
+
 	output:
 	tuple val(u_filter_id), path('amplicon_folding_input_circ*')
 	tuple val(u_filter_id), path('all_primers_circ*')
@@ -301,7 +301,7 @@ process folding_amplicon {
 
 process specificity_primers {
 
-	container 'oncornalab/primerxl_circ:v0.11'
+	container 'oncornalab/primerxl_circ:v0.30'
 
 	// cpus 4
 	// cpus 16
