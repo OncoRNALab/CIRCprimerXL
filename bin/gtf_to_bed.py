@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # WARNING: this works for gtf file downloaded from ensembl. It does not work well for gtf files downloaded from Gencode.
 
