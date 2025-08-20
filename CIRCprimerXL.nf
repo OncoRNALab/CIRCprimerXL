@@ -183,8 +183,8 @@ your output directory : ${params.output_dir}
 process split_circRNAs {
 
 	input:
-	path(input_bed_handle)
-	path(chrom_file_handle)
+	path('input_bed_handle')
+	path('chrom_file_handle')
 
 	output:
 	path 'circ*'
@@ -204,9 +204,9 @@ process get_seq {
 
 	input:
 	file(ind_circ_file_handle)
-	path(fasta_index)
-	path(exons)
-	path(enst) 
+	path('fasta_index')
+	path('exons')
+	path('enst') 
 
 	output:
 	tuple val("${ind_circ_file_handle.baseName}"), path('input_primer3*')
@@ -227,18 +227,17 @@ process get_seq {
 
 process get_SNPs {
 
-	container 'oncornalab/primerxl_circ:v0.30'
+	container 'oncornalab/primerxl_circ:v25.1'
 
 	input:
-	tuple val(snp_id), path(in_SNP_handle)
-	tuple val(snp_id), path(fasta_SNP_handle)
-	tuple val(snp_id), path(fasta_track_handle)
+	tuple val(snp_id), path('in_SNP_handle')
+	tuple val(snp_id), path('fasta_SNP_handle')
+	tuple val(snp_id), path('fasta_track_handle')
 
 
 	output:
 	tuple val(snp_id), path('output_SNP*')
 	tuple val(snp_id), path('output_SNP*')
-
 
 	"""
 	05_get_SNPs.py -i $in_SNP_handle -u $params.snp_url -f $fasta_SNP_handle -t $fasta_track_handle
@@ -256,7 +255,7 @@ process folding_template {
 	tuple val (fold_id_t), path('output_NUPACK_*')
 
 	"""
-	06_get_sec_str_temp.py -i in_folding_handle
+	06_get_sec_str_temp.py -i $in_folding_handle
 	"""
 }
 
@@ -287,7 +286,7 @@ process get_primers {
 process folding_amplicon {
 
 	input:
-	tuple val(fold_id_a), path(amplicon_folding_in_handle)
+	tuple val(fold_id_a), path('amplicon_folding_in_handle')
 
 	output:
 	tuple val(fold_id_a), path('output_NUPACK_*')
@@ -301,7 +300,7 @@ process folding_amplicon {
 
 process specificity_primers {
 
-	container 'oncornalab/primerxl_circ:v0.30'
+	container 'oncornalab/primerxl_circ:v25.1'
 
 	// cpus 4
 	// cpus 16
@@ -316,7 +315,7 @@ process specificity_primers {
 	script:
 	"""
 	cat primer_spec_input_* > primer_spec_input_all_circ.txt
-	/bin/bowtie-1.3.0-linux-x86_64/bowtie --tryhard -X1000 -v3 --quiet -x $bowtie_index/$params.index_bowtie_name --threads ${task.cpus} --12 primer_spec_input_all_circ.txt > out_spec_primer.txt
+	/bin/bowtie-1.3.1-linux-x86_64/bowtie --tryhard -X1000 -v3 --quiet -x $bowtie_index/$params.index_bowtie_name --threads ${task.cpus} --12 primer_spec_input_all_circ.txt > out_spec_primer.txt
 	"""
 }
 
